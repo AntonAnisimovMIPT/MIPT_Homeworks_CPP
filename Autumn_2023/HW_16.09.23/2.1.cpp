@@ -3,7 +3,7 @@
 const int MAX_N = 10000;
 
 // Cначала научимся находить длину посл-ти Коллатца, зная значения длин ее подпосл-тей.
-int col_length(int n, int length_data[]) {
+int col_length(int n, int* length_data) {
 
     // "База" рекурсии
     if (n == 1) {
