@@ -31,8 +31,14 @@ bool binary_search(int first, int last, int comp_value, int* arr)
 
 int main() {
     const auto SIZE = 10;
-    int arr[SIZE] = {1, 4, 7, 8, 10, 12, 13, 16, 100, 123};
+    auto arr = new int[SIZE]{};
 
+    for (auto i = 0; i < SIZE; ++i) {
+
+        arr[i] = i;
+
+    }
+    
     auto find = 1;
 
     if (binary_search(0, SIZE, find, arr)) {
