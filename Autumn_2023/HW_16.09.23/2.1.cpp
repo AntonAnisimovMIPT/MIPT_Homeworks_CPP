@@ -5,25 +5,31 @@ const int MAX_N = 10000;
 // Cначала научимся находить длину посл-ти Коллатца, зная значения длин ее подпосл-тей.
 int col_length(int n, int* length_data) {
 
-    // "База" рекурсии
-    if (n == 1) {
-        return 1;
+    auto length = 1;
+    while (n != 1) {
+        if (n <= MAX_N && length_data[n] != 0) {
+            length += length_data[n] - 1;
+            break;
+        }
+        
+        // вычисление члена по определению послед-ти Коллатца
+        n = (n % 2 == 0) ? (n /= 2) : (n = 3 * n + 1);
+        
+        length++;
     }
-
-    // Та самая ключевая идея кэширования (итоговая длина вычисляется как длина самого элемента (=1) + длина посл-ти, следующей после этого элемента.
-    auto length = (n % 2 == 0) ? (1 + col_length(n / 2, length_data)) : (1 + col_length(3 * n + 1, length_data));
-
+    
+    // кэшируем
     if (n <= MAX_N) {
-        length_data[n] = length; // Возможно это условие излишне, т.к итерация в строке 29 автоматом выполняет это условие, но лишняя защита не помешает.
+        length_data[n] = length;
     }
-
+    
     return length;
 }
 
 int main() {
     auto max_length = 0;
     auto initial_value = 0;
-    int length_data[MAX_N + 1]{};
+    int length_data[MAX_N]{};
 
     // Итерацией по всем элементам найдем тот, у которого наибольшая длина послед-ти.
     for (auto i = 1; i <= MAX_N; ++i) {
