@@ -59,7 +59,7 @@ public:
 
         double semiperimeter = (sides.tr_a + sides.tr_b + sides.tr_c) / 2;
 
-        return sqrt(semiperimeter * (semiperimeter - sides.tr_a) * (semiperimeter - sides.tr_b) * (semiperimeter - sides.tr_c));
+        return std::sqrt(semiperimeter * (semiperimeter - sides.tr_a) * (semiperimeter - sides.tr_b) * (semiperimeter - sides.tr_c));
 
     }
 public:
