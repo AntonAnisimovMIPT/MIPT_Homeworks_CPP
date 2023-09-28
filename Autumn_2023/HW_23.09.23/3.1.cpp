@@ -48,7 +48,7 @@ int main() {
 
     std::cout << "Student " << st1.student_name << " attend: ";
     for (auto i = 0; i < max_num_les; ++i) {
-        if (st1.lessons[i] != nullptr) {
+        if (st1.lessons[i]) {
             std::cout << st1.lessons[i]->lesson_name << " ";
         }
     }
@@ -56,7 +56,7 @@ int main() {
 
     std::cout << "Student " << st2.student_name << " attend: ";
     for (auto i = 0; i < max_num_les; ++i) {
-        if (st2.lessons[i] != nullptr) {
+        if (st2.lessons[i]) {
             std::cout << st2.lessons[i]->lesson_name << " ";
         }
     }
@@ -64,7 +64,7 @@ int main() {
 
     std::cout << "Lesson " << ls1.lesson_name << " attend: ";
     for (auto i = 0; i < max_num_st; ++i) {
-        if (ls1.students[i] != nullptr) {
+        if (ls1.students[i]) {
             std::cout << ls1.students[i]->student_name << " ";
         }
     }
@@ -72,7 +72,7 @@ int main() {
 
     std::cout << "Lesson " << ls2.lesson_name << " attend: ";
     for (auto i = 0; i < max_num_st; ++i) {
-        if (ls2.students[i] != nullptr) {
+        if (ls2.students[i]) {
             std::cout << ls2.students[i]->student_name << " ";
         }
     }
@@ -80,16 +80,11 @@ int main() {
 
     std::cout << "Lesson " << ls3.lesson_name << " attend: ";
     for (auto i = 0; i < max_num_st; ++i) {
-        if (ls3.students[i] != nullptr) {
+        if (ls3.students[i]) {
             std::cout << ls3.students[i]->student_name << " ";
         }
     }
     std::cout << "\n";
-
-
-
-
-
 
 
 }
