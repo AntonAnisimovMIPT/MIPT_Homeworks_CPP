@@ -1,90 +1,134 @@
 #include <iostream>
 #include <string>
 
-auto const max_num_les = 3;
-auto const max_num_st = 2;
+class Lesson;  // Объявление класса Lesson перед Student
 
-struct Lesson;
+class Student
+{
+public:
 
-struct Student {
+    Student(const std::string & name) : m_name(name) {}
 
-    std::string student_name{};
-    Lesson** lessons = new Lesson*[max_num_les]{};
+public:
 
+    const auto & name() const
+    {
+        return m_name;
+    }
+
+    void add_lesson(Lesson * lesson);
+
+    void show_lessons() const;
+
+private:
+
+    static inline const int max_lessons = 100;
+
+    std::string m_name;
+
+    Lesson * m_lessons[max_lessons]{};
+
+    int m_counter = 0;
 };
 
-struct Lesson {
+class Lesson
+{
+public:
 
-    std::string lesson_name{};
-    Student** students = new Student*[max_num_st]{};
+    Lesson(const std::string & name) : m_name(name) {}
 
+public:
+
+    const auto & name() const
+    {
+        return m_name;
+    }
+
+    void add_student(Student * student);
+
+    void show_students() const;
+
+private:
+
+    static inline const int max_students = 100;
+
+    std::string m_name;
+
+    Student * m_students[max_students]{};
+
+    int m_counter = 0;
 };
 
-
-int main() {
-
-    Student st1{.student_name = "Andrew"};
-    Student st2{.student_name = "Oleg"};
-
-    Lesson ls1{.lesson_name = "Math"};
-    Lesson ls2{.lesson_name = "Bio"};
-    Lesson ls3{.lesson_name = "Geo"};
-
-
-    st1.lessons[0] = &ls1;
-    st1.lessons[1] = &ls2;
-    st1.lessons[2] = &ls3;
-
-    st2.lessons[0] = &ls1;
-
-    /////////////////////
-
-    ls1.students[0] = &st1;
-    ls1.students[1] = &st2;
-
-    ls2.students[0] = &st1;
-
-    ls3.students[0] = &st1;
-
-    std::cout << "Student " << st1.student_name << " attend: ";
-    for (auto i = 0; i < max_num_les; ++i) {
-        if (st1.lessons[i]) {
-            std::cout << st1.lessons[i]->lesson_name << " ";
-        }
+void Student::add_lesson(Lesson * lesson)
+{
+    if (m_counter < max_lessons)
+    {
+        m_lessons[m_counter++] = lesson;
     }
-    std::cout << "\n";
-
-    std::cout << "Student " << st2.student_name << " attend: ";
-    for (auto i = 0; i < max_num_les; ++i) {
-        if (st2.lessons[i]) {
-            std::cout << st2.lessons[i]->lesson_name << " ";
-        }
+    else
+    {
+        std::cout << "error: too many lessons" << std::endl;
     }
-    std::cout << "\n\n";
+}
 
-    std::cout << "Lesson " << ls1.lesson_name << " attend: ";
-    for (auto i = 0; i < max_num_st; ++i) {
-        if (ls1.students[i]) {
-            std::cout << ls1.students[i]->student_name << " ";
-        }
+void Student::show_lessons() const
+{
+    std::cout << "Student " << m_name << " visits: " << std::endl;
+
+    for (auto i = 0; i < m_counter; ++i)
+    {
+        std::cout << i + 1 << ": " << m_lessons[i]->name() << std::endl;
     }
-    std::cout << "\n";
+}
 
-    std::cout << "Lesson " << ls2.lesson_name << " attend: ";
-    for (auto i = 0; i < max_num_st; ++i) {
-        if (ls2.students[i]) {
-            std::cout << ls2.students[i]->student_name << " ";
-        }
+void Lesson::add_student(Student * student)
+{
+    if (m_counter < max_students)
+    {
+        m_students[m_counter++] = student;
     }
-    std::cout << "\n";
-
-    std::cout << "Lesson " << ls3.lesson_name << " attend: ";
-    for (auto i = 0; i < max_num_st; ++i) {
-        if (ls3.students[i]) {
-            std::cout << ls3.students[i]->student_name << " ";
-        }
+    else
+    {
+        std::cout << "error: too many students" << std::endl;
     }
-    std::cout << "\n";
+}
 
+void Lesson::show_students() const
+{
+    std::cout << "Lesson " << m_name << " visits: " << std::endl;
 
+    for (auto i = 0; i < m_counter; ++i)
+    {
+        std::cout << i + 1 << ": " << m_students[i]->name() << std::endl;
+    }
+}
+
+void connect(Student * s, Lesson * l)
+{
+    s->add_lesson(l);
+    l->add_student(s);
+}
+
+int main()
+{
+    Student s1("Ivan");
+    Student s2("Dmitriy");
+    Student s3("Alexander");
+
+    Lesson l1("Math");
+    Lesson l2("Physics");
+    Lesson l3("Literature");
+
+    connect(&s1, &l1);
+    connect(&s2, &l2);
+    connect(&s3, &l3);
+    connect(&s1, &l3);
+    connect(&s2, &l1);
+    connect(&s3, &l2);
+
+    s1.show_lessons();
+
+    l1.show_students();
+
+    return 0;
 }
