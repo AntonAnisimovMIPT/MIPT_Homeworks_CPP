@@ -1,19 +1,18 @@
 #include <iostream>
 
+
 class Circle {
-private:
-    double r{};
 
 public:
-    [[maybe_unused]] inline double perimeter() {
+    [[nodiscard]] inline double perimeter() const {
 
         return 2*3.14*r;
 
     }
 
-    [[maybe_unused]] inline double area() {
+    [[nodiscard]] inline double area() const {
 
-        return 2*3.14*r*r;
+        return 2*pi*r*r;
 
     }
 
@@ -27,41 +26,34 @@ public:
 
 public:
 
-    [[maybe_unused]] double Get_radius() const {
+    [[nodiscard]] double Get_radius() const {
         return r;
     }
 
-};
-
-struct Sides {
-
-    double tr_a{};
-    double tr_b{};
-    double tr_c{};
+private:
+    double r{};
+    static inline const double pi = 3.1428;
 
 };
 
 class Triangle {
 
-private:
-    Sides sides;
-
 public:
-    [[maybe_unused]] inline double perimeter() {
+    [[nodiscard]] double perimeter() const {
 
-        return sides.tr_a + sides.tr_b + sides.tr_c;
+        return tr_a + tr_b + tr_c;
 
     }
 
-    [[maybe_unused]] inline double area() {
+    [[nodiscard]] double area() const{
 
-        double semiperimeter = (sides.tr_a + sides.tr_b + sides.tr_c) / 2;
+        double semiperimeter = (tr_a + tr_b + tr_c) / 2;
 
-        return std::sqrt(semiperimeter * (semiperimeter - sides.tr_a) * (semiperimeter - sides.tr_b) * (semiperimeter - sides.tr_c));
+        return std::sqrt(semiperimeter * (semiperimeter - tr_a) * (semiperimeter - tr_b) * (semiperimeter - tr_c));
 
     }
 public:
-    Triangle(Sides sides) : sides(sides) {}
+    Triangle(double a, double b, double c) : tr_a(a), tr_b(b), tr_c(c) {}
 
     ~Triangle() {
         std::cout << "triangle destructor called!!!\n";
@@ -69,32 +61,35 @@ public:
 
 public:
 
-    [[maybe_unused]] double Get_a() const {
-        return sides.tr_a;
+    [[nodiscard]] double Get_a() const {
+        return tr_a;
     }
 
-    [[maybe_unused]] double Get_b() const {
-        return sides.tr_b;
+    [[nodiscard]] double Get_b() const {
+        return tr_b;
     }
 
-    [[maybe_unused]] double Get_c() const {
-        return sides.tr_c;
+    [[nodiscard]] double Get_c() const {
+        return tr_c;
     }
+
+private:
+    double tr_a{};
+    double tr_b{};
+    double tr_c{};
 
 };
 
 class Square {
-private:
-    double a{};
 
 public:
-    [[maybe_unused]] inline double perimeter() {
+    [[nodiscard]] double perimeter() const {
 
         return 4*a;
 
     }
 
-    [[maybe_unused]] inline double area() {
+    [[nodiscard]] double area() const {
 
         return a*a;
 
@@ -109,9 +104,13 @@ public:
 
 public:
 
-    [[maybe_unused]] double Get_side() const {
+    [[nodiscard]] double Get_side() const {
         return a;
     }
+
+private:
+    double a{};
+
 
 };
 
@@ -126,8 +125,7 @@ int main() {
 
 
     // треугольник
-    Sides sides(3, 4, 5);
-    Triangle triangle(sides);
+    Triangle triangle(3, 4, 5);
 
     std::cout << "TRIANGLE: \n" << "a = " << triangle.Get_a() << ", b = " << triangle.Get_b() << ", c = " << triangle.Get_c() << "\n";
     std::cout << "area = " << triangle.area() << "\n" << "perimeter = " << triangle.perimeter() << "\n\n";
