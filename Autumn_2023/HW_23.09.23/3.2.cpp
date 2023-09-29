@@ -6,7 +6,7 @@ class Circle {
 public:
     [[nodiscard]] inline double perimeter() const {
 
-        return 2*3.14*r;
+        return 2*pi*r;
 
     }
 
