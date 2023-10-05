@@ -42,7 +42,7 @@ int main()
     Derived derived;
     Base *base = &derived;
 
-    std::cout << "overriden return type: ";
+    std::cout << "derived return type: ";
     derived.memeber_pointer()->type_output();
     std::cout << ", but return type of base is ";
     base->memeber_pointer()->type_output();
