@@ -20,7 +20,7 @@ public:
 class Derived : public Base
 {
 public:
-    Derived* memeber_pointer() override final {
+    virtual Derived* memeber_pointer() {
 
         Derived* d_ptr = new Derived;
         return d_ptr;
@@ -48,7 +48,5 @@ int main()
     base->memeber_pointer()->type_output();
 
 
-    delete base->memeber_pointer();
-    delete derived.memeber_pointer();
 
 }
