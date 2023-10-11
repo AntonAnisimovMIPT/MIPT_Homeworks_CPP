@@ -124,11 +124,11 @@ public:
 
     }
 
-    int& operator[] (int m_i) {
+    int& operator[] (int i) {
 
-        if (m_i < m_size) {
+        if (i < m_size) {
 
-            return m_data[m_i];
+            const_cast<int&>(static_cast<const Container&>(*this)[i]);
 
         }
 
@@ -140,11 +140,11 @@ public:
 
     }
 
-    const int& operator[] (int m_i) const {
+    const int& operator[] (int i) const {
 
-        if (m_i < m_size) {
+        if (i < m_size) {
 
-            return m_data[m_i];
+            return m_data[i];
 
         }
 
