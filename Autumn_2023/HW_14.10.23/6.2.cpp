@@ -61,7 +61,7 @@ public:
         }
     }
 
-    [[nodiscard]] const T& front() const {
+    const T& front() const {
         if (!empty()) {
 
             return m_data[0];
@@ -87,7 +87,7 @@ public:
         }
     }
 
-    [[nodiscard]] const T& back() const {
+    const T& back() const {
 
         if(!empty()) {
 
@@ -119,7 +119,7 @@ public:
 
     }
 
-    [[nodiscard]] bool empty() const {
+    bool empty() const {
 
         return m_size == 0;
 
@@ -157,13 +157,13 @@ public:
 
     }
 
-    [[nodiscard]] int Get_Size() const {
+    int Get_Size() const {
 
         return m_size;
 
     }
 
-    [[nodiscard]] int Get_Capacity() const {
+    int Get_Capacity() const {
 
         return m_capacity;
 
@@ -175,7 +175,7 @@ public:
 
     }
 
-    void push_back(const int value) {
+    void push_back(const T value) {
 
         if (m_size >= m_capacity) {
 
