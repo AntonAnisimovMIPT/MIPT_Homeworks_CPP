@@ -6,7 +6,7 @@ public:
 
     Person() : name("no name"), age(0), height(0) {}
 
-    void SetName(std::string name) {
+    void SetName(const std::string& name) {
         this->name = name;
     }
 
@@ -22,13 +22,13 @@ public:
         std::cout << "Name: " << name << "\nAge: " << age << "\nHeight: " << height << "\n";
     }
 
-protected:
+private:
     std::string name;
     int age;
     double height;
 };
 
-class Builder : public Person {
+class Builder {
 public:
 
     Builder& name(const std::string& name) {
@@ -41,7 +41,7 @@ public:
         return *this;
     }
 
-    Builder& height(int height) {
+    Builder& height(double height) {
         m_p.SetHeight(height);
         return *this;
     }
