@@ -2,18 +2,19 @@
 
 class Color_v1 {
 public:
-    Color_v1(int rgb) { std::cout << "Color_v1 in rgb: " << rgb << "\n"; }
+    explicit Color_v1(int rgb) { std::cout << "Color_v1 in rgb: " << rgb << "\n"; }
 };
 
 class Label_v1 {
 public:
-    Label_v1(char lb) { std::cout << "Label_v1: " << lb << "\n"; }
+    explicit Label_v1(char lb) { std::cout << "Label_v1: " << lb << "\n"; }
 };
 
 template <typename... Bases>
 class Point_v1 : public Bases... {
 public:
-    explicit Point_v1(double x, double y, Bases... bs) : Bases(bs)..., m_x(x), m_y(y) {
+    template<typename... Args>
+    explicit Point_v1(double x, double y, Args... args) : Bases(args)..., m_x(x), m_y(y) {
         std::cout << sizeof...(Bases) << std::endl;
     }
 
