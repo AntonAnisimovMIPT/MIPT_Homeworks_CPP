@@ -12,24 +12,26 @@ std::variant <std::monostate, double, std::pair<double, double>> roots(double a,
         return -b/(2*a);
     }
     else {
-        return std::pair((-b+std::sqrt(D))/(2*a), (-b-std::sqrt(D))/(2*a));
+        return std::make_pair((-b+std::sqrt(D))/(2*a), (-b-std::sqrt(D))/(2*a));
     }
 
 }
 
 int main() {
-    double a,b,c = 1.0;
+    double a,b,c;
     std::cin >> a >> b >> c;
 
-    if (std::holds_alternative<std::monostate>(roots(a,b,c))) {
+    auto rts = roots(a,b,c);
+    if (std::holds_alternative<std::monostate>(rts)) {
         std::cout << "no roots!!!";
     }
-    else if (std::holds_alternative<double>(roots(a,b,c))) {
-        std::cout << "one root: " <<  std::get<double>(roots(a,b,c));
+    else if (std::holds_alternative<double>(rts)) {
+        std::cout << "one root: " <<  std::get<double>(rts);
     }
     else {
-        std::cout << "first root: " <<  std::get<std::pair<double, double>>(roots(a,b,c)).first << "\n";
-        std::cout << "second root: " <<  std::get<std::pair<double, double>>(roots(a,b,c)).second;
+        auto pr = std::get<std::pair<double, double>>(rts);
+        std::cout << "first root: " <<  pr.first << "\n";
+        std::cout << "second root: " <<  pr.second;
     }
 
 }
