@@ -2,12 +2,12 @@
 #include <variant>
 
 struct Point {
-    Point(double x, double y) : m_x(x), m_y(y) {}
+    explicit Point(double x, double y) : m_x(x), m_y(y) {}
     double m_x,m_y;
 };
 
 struct Line {
-    Line(double a, double  b, double c) : m_a(a), m_b(b), m_c(c) {}
+    explicit Line(double a, double  b, double c) : m_a(a), m_b(b), m_c(c) {}
     double m_a,m_b,m_c;
 };
 
@@ -33,15 +33,18 @@ int main() {
     Line line1(1, 1, 1);
     Line line2(1, 2, 3);
 
-    if (std::holds_alternative<std::monostate>(location(line1, line2))) {
-       std::cout << "no common points!!!";
+    auto loc = location(line1, line2);
+    if (std::holds_alternative<std::monostate>(loc)) {
+        std::cout << "no common points!!!";
     }
-    else if (std::holds_alternative<Point>(location(line1, line2)))  {
-        std::cout << "one point:\n" << "x = " << std::get<Point>(location(line1, line2)).m_x << "\ny = " << std::get<Point>(location(line1, line2)).m_y;
+    else if (std::holds_alternative<Point>(loc))  {
+        auto point = std::get<Point>(loc);
+        std::cout << "one point:\n" << "x = " << point.m_x << "\ny = " << point.m_y;
 
     }
     else {
-        std::cout << "common line:\n" << "a = " << std::get<Line>(location(line1, line2)).m_a << "\nb = " << std::get<Line>(location(line1, line2)).m_b << "\nc = " << std::get<Line>(location(line1, line2)).m_c;
+        auto line = std::get<Line>(loc);
+        std::cout << "common line:\n" << "a = " << line.m_a << "\nb = " << line.m_b << "\nc = " << line.m_c;
     }
 
 
