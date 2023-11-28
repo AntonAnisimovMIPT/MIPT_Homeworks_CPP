@@ -16,9 +16,8 @@ struct Fibonacci<1> {
 };
 
 int main() {
-    constexpr int N = 7;
 
-    std::cout  << Fibonacci<N>::value << "\n";
+    std::cout  << Fibonacci<7>::value << "\n";
 
     return 0;
 }
