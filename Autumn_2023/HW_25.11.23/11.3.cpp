@@ -15,7 +15,7 @@ constexpr auto e (double input) {
 }
 
 int main() {
-    constexpr double precesion = 0.000001;
-    std::cout << e(precesion);
+    constexpr auto res = e(0.00001);
+    std::cout << res;
     }
 
