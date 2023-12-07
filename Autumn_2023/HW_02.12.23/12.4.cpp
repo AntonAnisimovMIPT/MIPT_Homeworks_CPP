@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <vector>
 #include <cmath>
+#include <numeric>
 
 class StartException : public std::exception {
 public:
@@ -37,7 +38,7 @@ public:
 
     double elapsed() const
     {
-        return static_cast < double > (std::chrono::duration_cast < std::chrono::microseconds >
+        return  static_cast < double >(std::chrono::duration_cast < std::chrono::microseconds >
                           (clock_t::now() - m_begin).count()) / 1'000'000.0;
     }
 
@@ -90,10 +91,8 @@ void Timer::restart() {
 double Timer::get_mean_measure() {
     if (!m_measurements.empty() && !is_started) {
         auto res = 0.0;
-        for (size_t i = 0; i < m_measurements.size(); ++i) {
-            res += m_measurements[i];
-        }
-        return res/m_measurements.size();
+
+        return std::accumulate(m_measurements.begin(), m_measurements.end(), 0.0)/m_measurements.size();
     }
     else {
         throw MeanException();
