@@ -17,10 +17,10 @@ bool mult_overed(ull a, ull b) {
 
 
 
-int pow(ull a, ull x) {
+ull pow(ull a, ull x) {
 
 
-    int result = 1;
+    ull result = 1;
 
     while (x > 0) {
         if (x % 2 == 1) {
@@ -45,7 +45,7 @@ int pow(ull a, ull x) {
 int main() {
 
 
-    int result = pow(0, 100000000000000);
+    ull result = pow(0, 100000000000000);
     std::cout << result << "\n";
 
     result = pow(2, 10);
