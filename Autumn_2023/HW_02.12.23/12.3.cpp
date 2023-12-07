@@ -29,7 +29,10 @@ std::size_t Count_dropped_dots(Point A, Point P) {
     for (std::size_t i = 0; i < size; ++i) {
         Point B{1 + 1.0 * std::cos(distribution(engine)), 1 + 1.0 * std::sin(distribution(engine))};
         Point C{1 + 1.0 * std::cos(distribution(engine)), 1 + 1.0 * std::sin(distribution(engine))};
-        if (det(P, B, C) >= 0 && det(A, P, C) >= 0 && det(A, B, P) >= 0 || (det(P, B, C) < 0 && det(A, P, C) < 0 && det(A, B, P) < 0)) {
+        auto d1 = det(P, B, C);
+        auto d2 = det(A, P, C);
+        auto d3 = det(A, B, P);
+        if (d1 >= 0 && d2 >= 0 && d3 >= 0 || (d1 <= 0 && d2 <= 0 && d3 <= 0)) {
             ++counter;
         }
     }
