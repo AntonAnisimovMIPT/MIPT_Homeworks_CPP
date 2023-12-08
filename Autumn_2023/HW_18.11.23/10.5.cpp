@@ -1,5 +1,6 @@
 #include <iostream>
 #include <numeric>
+#include <stdexception>
 
 class Ratio
 {
@@ -26,14 +27,14 @@ public:
         reduce();
     }
 
-    explicit operator double() const // good: explicit cast operator
+    explicit operator double() const noexcept // good: explicit cast operator
     {
         return 1.0 * m_numerator / m_denominator;
     }
 
 private:
 
-    void reduce()
+    void reduce() noexcept
     {
         auto gcd = std::gcd(m_numerator, m_denominator);
 
@@ -43,12 +44,12 @@ private:
 
 public:
 
-    auto numerator() const
+    auto numerator() const noexcept
     {
         return m_numerator;
     }
 
-    auto denominator() const
+    auto denominator() const noexcept
     {
         return m_denominator;
     }
@@ -62,7 +63,7 @@ public:
 
 public:
 
-    auto & operator+=(Ratio other)noexcept
+    auto & operator+=(Ratio other) noexcept
     {
         auto lcm = std::lcm(m_denominator, other.m_denominator);
 
@@ -81,7 +82,7 @@ public:
         return (*this += (other.m_numerator *= -1));
     }
 
-    auto & operator*=(Ratio other)noexcept
+    auto & operator*=(Ratio other) noexcept
     {
         m_numerator   *= other.m_numerator;
         m_denominator *= other.m_denominator;
@@ -101,21 +102,21 @@ public:
 
 public:
 
-    auto & operator++()noexcept
+    auto & operator++() noexcept
     {
         m_numerator += m_denominator;
 
         return *this;
     }
 
-    auto & operator--()noexcept
+    auto & operator--() noexcept
     {
         m_numerator -= m_denominator;
 
         return *this;
     }
 
-    auto operator++(int)noexcept
+    auto operator++(int) noexcept
     {
         Ratio tmp(*this);
 
@@ -125,7 +126,7 @@ public:
 
     }
 
-    auto operator--(int)noexcept
+    auto operator--(int) noexcept
     {
         Ratio tmp(*this);
 
@@ -141,19 +142,19 @@ private:
 
 }; // class Ratio
 
-auto operator+(Ratio lhs, Ratio rhs)noexcept  // good: free function
+auto operator+(Ratio lhs, Ratio rhs) noexcept  // good: free function
 {
-    return (lhs += rhs);
+return (lhs += rhs);
 }
 
 auto operator-(Ratio lhs, Ratio rhs) noexcept // good: free function
 {
-    return (lhs -= rhs);
+return (lhs -= rhs);
 }
 
-auto operator*(Ratio lhs, Ratio rhs)noexcept  // good: free function
+auto operator*(Ratio lhs, Ratio rhs) noexcept  // good: free function
 {
-    return (lhs *= rhs);
+return (lhs *= rhs);
 }
 
 auto operator/(Ratio lhs, Ratio rhs) // good: free function
@@ -161,34 +162,34 @@ auto operator/(Ratio lhs, Ratio rhs) // good: free function
     return (lhs /= rhs);
 }
 
-auto operator<(Ratio lhs, Ratio rhs)noexcept
+auto operator<(Ratio lhs, Ratio rhs) noexcept
 {
-    return static_cast < double > (lhs) < static_cast < double > (rhs);
+return static_cast < double > (lhs) < static_cast < double > (rhs);
 }
 
-auto operator>(Ratio lhs, Ratio rhs)noexcept
+auto operator>(Ratio lhs, Ratio rhs) noexcept
 {
-    return (rhs < lhs);
+return (rhs < lhs);
 }
 
-auto operator<=(Ratio lhs, Ratio rhs)noexcept
+auto operator<=(Ratio lhs, Ratio rhs) noexcept
 {
-    return !(lhs > rhs);
+return !(lhs > rhs);
 }
 
-auto operator>=(Ratio lhs, Ratio rhs)noexcept
+auto operator>=(Ratio lhs, Ratio rhs) noexcept
 {
-    return !(lhs < rhs);
+return !(lhs < rhs);
 }
 
-auto operator==(Ratio lhs, Ratio rhs)noexcept
+auto operator==(Ratio lhs, Ratio rhs) noexcept
 {
-    return (!(lhs < rhs) && !(rhs < lhs));
+return (!(lhs < rhs) && !(rhs < lhs));
 }
 
-auto operator!=(Ratio lhs, Ratio rhs)noexcept
+auto operator!=(Ratio lhs, Ratio rhs) noexcept
 {
-    return !(lhs == rhs);
+return !(lhs == rhs);
 }
 
 int main()
@@ -204,8 +205,11 @@ int main()
     catch (const std::invalid_argument& exception) {
         std::cout<<exception.what();
     }
-    catch (const std::invalid_argument& exception) {
+    catch (const std::exception& exception) {
         std::cout<<exception.what();
+    }
+    catch (...) {
+        std::cout << "error";
     }
 
 
