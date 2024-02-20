@@ -7,7 +7,7 @@ void Timing (std::size_t size_chunk, Timer& alloc_timer, Timer& dealloc_timer, i
         for (size_t i = 0; i < number_iterations; i++)
         {
             alloc_timer.start();
-            void* ptr = ::operator new(size_chunk);
+            auto ptr = ::operator new(size_chunk);
             alloc_timer.pause();
 
             dealloc_timer.start();
