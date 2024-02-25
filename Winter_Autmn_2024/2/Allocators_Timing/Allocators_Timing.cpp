@@ -30,13 +30,16 @@ void Comparison_with_Arena(std::size_t size, std::size_t size_block, Timer& allo
         
         for (int i = 0; i < number_iterations; ++i) {
 
-            alloc_timer.start(); 
-            Arena_Allocator allocator(size);
-            auto ptr = allocator.allocate(size_block);
-            alloc_timer.pause(); 
+            {    
+                alloc_timer.start(); 
+                Arena_Allocator allocator(size);
+                auto ptr = allocator.allocate(size_block);
+                alloc_timer.pause(); 
 
-            dealloc_timer.start();
+                dealloc_timer.start();
+            }
             dealloc_timer.pause();
+            
             
         }
     std::cout << "Allocation time for Arena: " << alloc_timer.get_mean_measure() << "\n";

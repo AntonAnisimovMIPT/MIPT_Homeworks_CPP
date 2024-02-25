@@ -1,84 +1,84 @@
 --Size = 1 KB--
 Tests for size_block = 128 bytes:
 Allocation time for Arena: 5e-08 
-Deallocation time for Arena: 0
-Allocation time for ::operator new: 2.3e-07
+Deallocation time for Arena: 1e-08
+Allocation time for ::operator new: 1e-08
+Deallocation time for ::operator delete: 3e-08
+Allocation time for Stack: 7e-08
+Deallocation time for Stack: 2e-08
+Allocation time for ::operator new: 3e-07
+Deallocation time for ::operator delete: 8e-08
+Allocation time for Chain: 9.1e-07
+Deallocation time for Chain: 5e-08
+Allocation time for ::operator new: 4e-08
+Deallocation time for ::operator delete: 2e-08
+
+Tests for size_block = 512 bytes:
+Allocation time for Arena: 5e-08
+Deallocation time for Arena: 3.4e-07
+Allocation time for ::operator new: 3e-08
 Deallocation time for ::operator delete: 1e-08
-Allocation time for Stack: 6e-08
+Allocation time for Stack: 1.3e-07
 Deallocation time for Stack: 0
-Allocation time for ::operator new: 6e-08
-Deallocation time for ::operator delete: 8.5e-07
-Allocation time for Chain: 4.1e-07
+Allocation time for ::operator new: 1.65e-06
+Deallocation time for ::operator delete: 5e-08
+Allocation time for Chain: 6.1e-07
 Deallocation time for Chain: 0
 Allocation time for ::operator new: 1e-08
 Deallocation time for ::operator delete: 1e-08
-
-Tests for size_block = 512 bytes:
-Allocation time for Arena: 2e-08
-Deallocation time for Arena: 0
-Allocation time for ::operator new: 1.2e-07
-Deallocation time for ::operator delete: 2e-08
-Allocation time for Stack: 4e-08
-Deallocation time for Stack: 6e-08
-Allocation time for ::operator new: 2.7e-07
-Deallocation time for ::operator delete: 3e-08
-Allocation time for Chain: 1.5e-07
-Deallocation time for Chain: 0
-Allocation time for ::operator new: 2e-08
-Deallocation time for ::operator delete: 1e-08
 --Size = 1 MB--
 Tests for size_block = 128 KB:
-Allocation time for Arena: 1.715e-05
-Deallocation time for Arena: 0
-Allocation time for ::operator new: 3.2e-07
-Deallocation time for ::operator delete: 2e-07
-Allocation time for Stack: 3.035e-05
+Allocation time for Arena: 1.206e-05
+Deallocation time for Arena: 1.083e-05
+Allocation time for ::operator new: 2.8e-07
+Deallocation time for ::operator delete: 2e-08
+Allocation time for Stack: 1.623e-05
 Deallocation time for Stack: 0
-Allocation time for ::operator new: 3.6e-07
-Deallocation time for ::operator delete: 1e-07
-Allocation time for Chain: 1.812e-05
-Deallocation time for Chain: 0
-Allocation time for ::operator new: 1.7e-07
-Deallocation time for ::operator delete: 2.4e-07
+Allocation time for ::operator new: 3e-08
+Deallocation time for ::operator delete: 4e-08
+Allocation time for Chain: 2.048e-05
+Deallocation time for Chain: 2e-08
+Allocation time for ::operator new: 4e-08
+Deallocation time for ::operator delete: 3e-08
 
 Tests for size_block = 512 KB:
-Allocation time for Arena: 1.186e-05
-Deallocation time for Arena: 0
-Allocation time for ::operator new: 2.6e-07
-Deallocation time for ::operator delete: 9e-08
-Allocation time for Stack: 1.366e-05
-Deallocation time for Stack: 1.22e-06
-Allocation time for ::operator new: 1.1e-07
-Deallocation time for ::operator delete: 3e-08
-Allocation time for Chain: 1.696e-05
+Allocation time for Arena: 1.353e-05
+Deallocation time for Arena: 1.302e-05
+Allocation time for ::operator new: 1.9e-07
+Deallocation time for ::operator delete: 4e-08
+Allocation time for Stack: 1.375e-05
+Deallocation time for Stack: 0
+Allocation time for ::operator new: 2e-08
+Deallocation time for ::operator delete: 2e-08
+Allocation time for Chain: 2.596e-05
 Deallocation time for Chain: 0
-Allocation time for ::operator new: 9e-08
-Deallocation time for ::operator delete: 6e-08
+Allocation time for ::operator new: 1e-07
+Deallocation time for ::operator delete: 1.5e-07
 --Size = 1 GB--
 Tests for size_block = 128 MB:
-Allocation time for Arena: 2.099e-05
-Deallocation time for Arena: 0
-Allocation time for ::operator new: 1.406e-05
-Deallocation time for ::operator delete: 1.112e-05
-Allocation time for Stack: 2.213e-05
+Allocation time for Arena: 2.649e-05
+Deallocation time for Arena: 3.109e-05
+Allocation time for ::operator new: 2.783e-05
+Deallocation time for ::operator delete: 1.747e-05
+Allocation time for Stack: 2.25e-05
 Deallocation time for Stack: 0
-Allocation time for ::operator new: 1.72e-05
-Deallocation time for ::operator delete: 1.238e-05
-Allocation time for Chain: 4.212e-05
-Deallocation time for Chain: 0
-Allocation time for ::operator new: 2.928e-05
-Deallocation time for ::operator delete: 1.719e-05
+Allocation time for ::operator new: 1.214e-05
+Deallocation time for ::operator delete: 9.68e-06
+Allocation time for Chain: 3.788e-05
+Deallocation time for Chain: 1.5e-07
+Allocation time for ::operator new: 1.324e-05
+Deallocation time for ::operator delete: 1.077e-05
 
 Tests for size_block = 512 MB:
-Allocation time for Arena: 3.361e-05
-Deallocation time for Arena: 0
-Allocation time for ::operator new: 1.912e-05
-Deallocation time for ::operator delete: 2.423e-05
-Allocation time for Stack: 1.962e-05
-Deallocation time for Stack: 0
-Allocation time for ::operator new: 2.16e-05
-Deallocation time for ::operator delete: 2.374e-05
-Allocation time for Chain: 3.036e-05
-Deallocation time for Chain: 0
-Allocation time for ::operator new: 2.153e-05
+Allocation time for Arena: 3.346e-05
+Deallocation time for Arena: 3.679e-05
+Allocation time for ::operator new: 1.768e-05
 Deallocation time for ::operator delete: 2.112e-05
+Allocation time for Stack: 2.264e-05
+Deallocation time for Stack: 8e-08
+Allocation time for ::operator new: 2.648e-05
+Deallocation time for ::operator delete: 1.852e-05
+Allocation time for Chain: 2.655e-05
+Deallocation time for Chain: 9e-08
+Allocation time for ::operator new: 2.739e-05
+Deallocation time for ::operator delete: 2.649e-05
