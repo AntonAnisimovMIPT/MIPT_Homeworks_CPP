@@ -35,19 +35,37 @@ void Timing (std::size_t size_chunk, Timer& alloc_timer, Timer& dealloc_timer, i
 
 int main() {
     const std::size_t KB = 1024;
-    const std::size_t MB = MB * 1024;
+    const std::size_t MB = KB * 1024;
     const std::size_t GB = MB * 1024;
 
     Timer allocTimer;
     Timer deallocTimer;
 
-    std::cout<<"KB:\n";
+    std::cout<<"1 KB:\n";
     Timing(KB, allocTimer, deallocTimer, 100);
 
-    std::cout<<"MB:\n";
+    std::cout<<"250 KB:\n";
+    Timing(250 * KB, allocTimer, deallocTimer, 100);
+
+    std::cout<<"500 KB:\n";
+    Timing(500 * KB, allocTimer, deallocTimer, 100);
+
+    std::cout<<"750 KB:\n";
+    Timing(750 * KB, allocTimer, deallocTimer, 100);
+
+    std::cout<<"1 MB:\n";
     Timing(MB, allocTimer, deallocTimer, 100);
 
-    std::cout<<"GB:\n";
+    std::cout<<"250 MB:\n";
+    Timing(250 * MB, allocTimer, deallocTimer, 100);
+
+    std::cout<<"500 MB:\n";
+    Timing(500 * MB, allocTimer, deallocTimer, 100);
+
+    std::cout<<"750 MB:\n";
+    Timing(750 * MB, allocTimer, deallocTimer, 100);
+
+    std::cout<<"1 GB:\n";
     Timing(GB, allocTimer, deallocTimer, 100);
 
     
