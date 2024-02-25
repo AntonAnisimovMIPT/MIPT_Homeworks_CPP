@@ -4,28 +4,26 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <limits>
 
 #include <boost/noncopyable.hpp>
 
-template <typename T>
-class Arena_Allocator // note: no deallocations for blocks of different sizes
+class Arena : private boost::noncopyable // note: no deallocations for blocks of different sizes
 {
 public:
-	using value_type = T;
 
-	explicit Arena_Allocator(std::size_t size) : m_size(size)
+	explicit Arena(std::size_t size) : m_size(size)
 	{
 		m_begin = ::operator new(m_size, default_alignment);
 	}
 
-	~Arena_Allocator() noexcept
+	~Arena() noexcept
 	{
 		::operator delete(m_begin, default_alignment);
 	}
 
-	[[nodiscard]] T * allocate(std::size_t size, std::size_t alignment = alignof(std::max_align_t))
+	[[nodiscard]] void * allocate(std::size_t size, std::size_t alignment = alignof(std::max_align_t))
 	{
-
 		void * first = get_byte(m_begin) + m_offset;
 
 		auto space = m_size - m_offset;
@@ -34,12 +32,12 @@ public:
 		{
 			m_offset = m_size - space + size; 
 			
-			return std::bit_cast<T*>(get_byte(m_begin) + m_offset); // note: aligned pointer
+			return first; // note: aligned pointer
 		}
 		else return nullptr;
 	}
 
-	void deallocate(T* p, std::size_t n) noexcept {}
+    void deallocate(void * ptr, std::size_t size) const noexcept {}
 
 	void print() const
 	{
@@ -70,20 +68,48 @@ private:
 
 }; // class Arena_Allocator : private boost::noncopyable
 
+template < typename T > class Allocator
+{
+public:
+	using value_type = T;
+
+    explicit Allocator(Arena& arena) noexcept : m_arena(&arena) {}
+
+	T* allocate(std::size_t n) {
+		
+		if (n > std::numeric_limits<std::size_t>::max() / sizeof(T))
+			throw std::bad_alloc();
+
+		void* ptr = m_arena->allocate(n * sizeof(T), alignof(T));
+
+		if (!ptr)
+			throw std::bad_alloc();
+		return static_cast<T*>(ptr);
+	}
+
+	void deallocate(T* ptr, std::size_t n) noexcept {}
+
+private:
+
+    Arena * m_arena = nullptr;
+
+}; // template < typename T > class Allocator
 
 int main()
 {
-	Arena_Allocator<int> allocator(1024);
+	Arena arena(1024);
 
-    std::vector<int, Arena_Allocator<int>> vec(std::move(allocator));
+    Allocator < int > allocator(arena);
 
-    vec.push_back(1);
-	vec.push_back(11);
-    vec.push_back(111);
+    arena.print(); // note: 0 bytes used
 
-	for (const auto& elem : vec)
-    {
-        std::cout << elem << std::endl;
-    }
+    std::vector < int, Allocator < int > > vector(10, 42, allocator);
 
+    arena.print(); // note: 40 bytes used
+
+    vector.push_back(42);
+
+    arena.print(); // note: 128 bytes used
+
+	return 0;
 }
