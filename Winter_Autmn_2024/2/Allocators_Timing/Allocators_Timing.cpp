@@ -3,6 +3,7 @@
 #include <Stack_Allocator.h>
 #include <timer.h>
 
+
 auto Time_for_NewDelete(std::size_t size_block, Timer& alloc_timer, Timer& dealloc_timer, int number_iterations) {
     for (size_t i = 0; i < number_iterations; i++)
         {
@@ -29,16 +30,23 @@ void Comparison_with_Arena(std::size_t size, std::size_t size_block, Timer& allo
     try {
         
         for (int i = 0; i < number_iterations; ++i) {
-
-            {    
+            
+            Arena_Allocator allocator(size);
+            auto number_alocations = static_cast<int>(size/size_block);
+            for (int i = 0; i < number_alocations; ++i)
+            {
+                {
                 alloc_timer.start(); 
-                Arena_Allocator allocator(size);
+                
                 auto ptr = allocator.allocate(size_block);
                 alloc_timer.pause(); 
 
                 dealloc_timer.start();
+                }
+                dealloc_timer.pause();
+
             }
-            dealloc_timer.pause();
+            
             
             
         }
@@ -62,15 +70,19 @@ void Comparison_with_Stack(std::size_t size, std::size_t size_block, Timer& allo
     try {
         
         for (int i = 0; i < number_iterations; ++i) {
-
-            alloc_timer.start(); 
+            
             Stack_Allocator allocator(size);
-            auto ptr = allocator.allocate(size_block);
-            alloc_timer.pause(); 
+            auto number_alocations = static_cast<int>(size/size_block);
+            for (int i = 0; i < number_alocations; i++)
+            {
+                alloc_timer.start(); 
+                auto ptr = allocator.allocate(size_block);
+                alloc_timer.pause(); 
 
-            dealloc_timer.start();
-            allocator.deallocate(ptr);
-            dealloc_timer.pause();
+                dealloc_timer.start();
+                allocator.deallocate(ptr);
+                dealloc_timer.pause();
+            }
 
         }
     std::cout << "Allocation time for Stack: " << alloc_timer.get_mean_measure() << "\n";
@@ -94,14 +106,18 @@ void Comparison_with_Chain(std::size_t size, std::size_t size_block, Timer& allo
         
         for (int i = 0; i < number_iterations; ++i) {
 
-            alloc_timer.start(); 
             Chain_Allocator allocator(size, size_block);
-            auto ptr = allocator.allocate();
-            alloc_timer.pause(); 
+            auto number_alocations = static_cast<int>(size/size_block);
+            for (int i = 0; i < number_alocations; i++)
+            {
+                alloc_timer.start(); 
+                auto ptr = allocator.allocate();
+                alloc_timer.pause(); 
 
-            dealloc_timer.start();
-            allocator.deallocate(ptr);
-            dealloc_timer.pause();
+                dealloc_timer.start();
+                allocator.deallocate(ptr);
+                dealloc_timer.pause();
+            }
             
         }
     std::cout << "Allocation time for Chain: " << alloc_timer.get_mean_measure() << "\n";
@@ -118,6 +134,7 @@ void Comparison_with_Chain(std::size_t size, std::size_t size_block, Timer& allo
     }
     
 }
+
     
 int main() {
 
