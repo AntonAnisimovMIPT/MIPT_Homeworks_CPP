@@ -7,12 +7,7 @@
 template <typename Container>
 auto Aka_std_sort(Container& container) {
 
-    std::vector<std::reference_wrapper<typename Container::value_type>> wrapper;
-
-    // насколько  понял, через обычный оператор [] со списками нельзя работать, а через такой цикл for можно
-    for (auto& element : container) {
-        wrapper.push_back(std::ref(element));
-    }
+    std::vector<std::reference_wrapper<typename Container::value_type>> wrapper(container.begin(), container.end());
 
     std::sort(wrapper.begin(), wrapper.end());
 
