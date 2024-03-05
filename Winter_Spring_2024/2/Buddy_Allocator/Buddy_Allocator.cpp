@@ -2,36 +2,33 @@
 #include <array>
 #include <limits>
 #include <cmath>
+#include <iostream>
 
-class Allocator {
-
-    public:
-        virtual ~Allocator() = default;
-        virtual void* Allocate(const std::size_t size, const std::size_t alignment) = 0;
-        virtual void Deallocate(void* ptr) = 0;
-        virtual void Reset() = 0;
-
-	protected:
-		Allocator(const std::size_t size) : m_Size(size) {}
-
-        std::size_t m_Size;
-		void* m_StartAddress;
-
-};
-
-constexpr std::size_t Log2(std::size_t x)
-{
-	return x == 1 ? 0 : 1 + Log2(x / 2);
+constexpr std::size_t Log2(std::size_t x) {
+    std::size_t result = 0;
+    while (x > 1) {
+        x /= 2;
+        ++result;
+    }
+    return result;
 }
 
-class BuddyAllocator : public Allocator {
+class BuddyAllocator {
     
     public:
-		BuddyAllocator(const std::size_t size);
-		~BuddyAllocator() override;
-		void* Allocate(const std::size_t size, const std::size_t alignment) override;
-		void Deallocate(void* ptr) override;
-		void Reset() override;
+		BuddyAllocator(const std::size_t size) : m_Size(size) {
+			m_StartAddress = ::operator new(size);
+			Init();
+    	}
+
+		~BuddyAllocator() {
+			::operator delete(m_StartAddress);
+			m_StartAddress = nullptr;
+		}
+		void* Allocate(const std::size_t size, const std::size_t alignment);
+		void Deallocate(void* ptr);
+		void Reset();
+
 	
     private:
 		struct Node
@@ -45,25 +42,16 @@ class BuddyAllocator : public Allocator {
 		};
 
 		static constexpr std::size_t s_Log2Header = Log2(sizeof(Header));
-		std::array<Node*, std::numeric_limits<std::size_t>::digits - s_Log2Header> m_Buckets = {};
+		std::array<Node*, std::numeric_limits<std::size_t>::digits10 - s_Log2Header> m_Buckets = {};
         void Init();
+
+		void* m_StartAddress;
+		std::size_t m_Size;
 };
-
-BuddyAllocator::BuddyAllocator(const std::size_t size) : Allocator(size)
-{
-	m_StartAddress = ::operator new(size);
-	Init();
-}
-
-BuddyAllocator::~BuddyAllocator()
-{
-	::operator delete(m_StartAddress);
-	m_StartAddress = nullptr;
-}
 
 void* BuddyAllocator::Allocate(const std::size_t size, const std::size_t alignment)
 {
-	auto bucket = std::max(int(std::ceil(std::log2(size + sizeof(Header))) - 1 - s_Log2Header), 0);
+	auto bucket = std::max(static_cast<int>(std::ceil(std::log2(size + sizeof(Header))) - 1 - s_Log2Header), 0);
 
 	if (m_Buckets[bucket] != nullptr)
 	{
@@ -79,7 +67,7 @@ void* BuddyAllocator::Allocate(const std::size_t size, const std::size_t alignme
 
 	for (i = bucket + 1; i < m_Buckets.size(); ++i)
 	{
-		if (m_Buckets[i] != nullptr)
+		if (!m_Buckets[i])
 			break;
 	}
 
@@ -194,5 +182,8 @@ void BuddyAllocator::Init()
 }
 
 int main() {
-	return 0;
+	BuddyAllocator allocator(1024);
+    allocator.Allocate(10000, 4);
+    allocator.Allocate(20000, 8);
+    allocator.Allocate(30000, 16);
 }
