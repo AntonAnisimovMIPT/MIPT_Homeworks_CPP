@@ -56,8 +56,8 @@ int main()
 	std::cout << "Enter array size: "; std::size_t n{}; std::cin >> n;
 
 	std::vector < int > vector(n, 0);
-    auto increasing = [](int a, int b) { return a > b; };
-    auto decreasing = [](int a, int b) { return a < b; };
+    auto increasing = [](auto a, auto b) { return a > b; };
+    auto decreasing = [](auto a, auto b) { return a < b; };
 
 	for (auto value = static_cast < int > (n); auto & element : vector) element = value--;
 	std::cout << "original: " << "\n";
