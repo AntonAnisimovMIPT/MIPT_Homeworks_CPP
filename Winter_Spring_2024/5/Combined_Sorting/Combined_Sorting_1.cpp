@@ -4,20 +4,19 @@
 #include <utility>
 #include <vector>
 
-template <typename T>
-bool increasing(const T& a, const T& b)
+auto increasing(int a, int b)
 {
     return a > b;
 }
 
-template <typename T>
-bool decreasing(const T& a, const T& b)
+
+auto decreasing(int a, int b)
 {
     return a < b;
 }
 
-template <typename F>
-void insertion_sort(std::vector < int > & v, std::size_t l, std::size_t r, F custom_comparator) // note: O(N^2) complexity 
+
+void insertion_sort(std::vector < int > & v, std::size_t l, std::size_t r, bool (*custom_comparator)(int, int)) // note: O(N^2) complexity 
 {
 	for (auto i = l + 1; i < r; ++i)
 	{
@@ -31,8 +30,7 @@ void insertion_sort(std::vector < int > & v, std::size_t l, std::size_t r, F cus
 	}
 }
 
-template <typename F>
-void merge_sort(std::vector < int > & v, std::size_t l, std::size_t m, std::size_t r, F  custom_comparator)
+void merge_sort(std::vector < int > & v, std::size_t l, std::size_t m, std::size_t r, bool (*custom_comparator)(int, int))
 {
 	const auto begin = l, end = m;
 
@@ -46,8 +44,7 @@ void merge_sort(std::vector < int > & v, std::size_t l, std::size_t m, std::size
 	for (std::size_t i = 0; i < std::size(t); ++i) v[begin + i] = t[i];
 }
 
-template <typename F>
-void merge_sort(std::vector < int > & v, std::size_t l, std::size_t r, F  custom_comparator) // note: O(N*log(N)) complexity (amortized)
+void merge_sort(std::vector < int > & v, std::size_t l, std::size_t r, bool (*custom_comparator)(int, int)) // note: O(N*log(N)) complexity (amortized)
 {
 	if (static const std::size_t block = 64; r - l <= block)
 	{
@@ -74,11 +71,11 @@ int main()
 	for (auto element : vector) std::cout << element << ' ';
 
 	std::cout << "\nincreasing: " << "\n";
-	merge_sort(vector, 0, n, increasing<int>); // good: half-open intervals preferred in C++
+	merge_sort(vector, 0, n, increasing); // good: half-open intervals preferred in C++
 	for (auto element : vector) std::cout << element << ' ';
 
 	std::cout << "\ndecreasing: " << "\n";
-	merge_sort(vector, 0, n, decreasing<int>);
+	merge_sort(vector, 0, n, decreasing);
 	for (auto element : vector) std::cout << element << ' ';
 
 	return 0;
