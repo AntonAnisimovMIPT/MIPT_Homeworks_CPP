@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <functional>
 #include <numeric>
+#include <iterator>
 
 int main() {
 
@@ -25,7 +26,7 @@ int main() {
     
     // 2. std::rotate_copy
     std::vector<int> rot_vec(vec.size());
-    std::rotate_copy(vec.cbegin(), vec.cbegin() + 3, vec.cend(), rot_vec.begin());
+    std::rotate_copy(vec.cbegin(), std::next(vec.cbegin(), 3), vec.cend(), rot_vec.begin());
     std::cout << "\nresult of rotate relative third element:\n";
     for (auto i : rot_vec)
     {
@@ -33,7 +34,7 @@ int main() {
     }
 
     // 3. std::equal
-    if (std::equal(vec.begin() + 3, vec.end(), rot_vec.begin(), rot_vec.end() - 3))
+    if (std::equal(std::next(vec.begin(), 3), vec.end(), rot_vec.begin(), std::prev(rot_vec.end(), (3+1))))
     {
         std::cout << "\nvec without first 3 elements equal rot_vec without last 3 elements";
     }
@@ -42,7 +43,7 @@ int main() {
     }
 
     // 4. std::partition
-    auto even = [](int x){return x%2 == 0; };
+    auto even = [](auto x){return x%2 == 0; };
     auto beggining_of_odd = std::partition(rot_vec.begin(), rot_vec.end(), even);
     std::cout << "\neven elements of rot_vec: ";
     for (auto iter = rot_vec.begin(); iter != beggining_of_odd; ++iter)
@@ -79,7 +80,7 @@ int main() {
 
     // 7. std::copy_if
     std::vector<int> copied_with_condition;
-    std::copy_if(vec.cbegin(), vec.cend(), std::back_inserter(copied_with_condition), [](int x){ return x%3 == 0;});
+    std::copy_if(vec.cbegin(), vec.cend(), std::back_inserter(copied_with_condition), [](auto x){ return x%3 == 0;});
      std::cout << "\ncopied with condition: ";
     for (auto i : copied_with_condition)
     {
@@ -90,8 +91,8 @@ int main() {
     std::sort(rot_vec.begin(), rot_vec.end());
     std::sort(vec.begin(), vec.end());
     std::vector<int> diff;
-    std::set_union(rot_vec.begin(), rot_vec.end(), vec.begin(), vec.end(), std::back_inserter(diff));
-    std::cout << "\ndifference of elements in destroyed rot_vec and vec: ";
+    std::set_difference(rot_vec.begin(), rot_vec.end(), vec.begin(), vec.end(), std::back_inserter(diff));
+    std::cout << "\ndifference of elements in rot_vec and vec: ";
     for (auto i : diff)
     {
         std::cout << i << " ";
