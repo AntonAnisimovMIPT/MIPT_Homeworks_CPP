@@ -1,4 +1,4 @@
-Spaceswithspaces
-manymanyspaces
-wemustdeletethesespaces
-andthesespaces
+Spaces with spaces
+many many    spaces
+we  must delete these spaces
+   and these      spaces

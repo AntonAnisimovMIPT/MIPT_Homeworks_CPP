@@ -14,10 +14,11 @@ void remove_spaces(const std::string& input_file) {
     std::string readable_line;
     while (std::getline(inputFile, readable_line)) {
 
-        readable_line.erase(std::remove_if(readable_line.begin(), readable_line.end(), ::isspace), readable_line.end());
-        if (!readable_line.empty()) {
+        if (!readable_line.empty() && !std::all_of(readable_line.begin(), readable_line.end(), [](unsigned char c) { return std::isspace(c); }))
+        {
             output_file << readable_line << std::endl;
         }
+        
     }
 
     inputFile.close();
