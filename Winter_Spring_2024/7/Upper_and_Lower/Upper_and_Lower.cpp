@@ -1,43 +1,52 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
 #include <cctype>
 
-auto convert_word(const std::string& input_word) {
-
-    if (std::size(input_word) == 0)
-    {
+auto convert_token(const std::string& token) {
+    if (token.empty()) {
         return std::string("");
     }
 
-    auto output_word = input_word;
+    std::string result_token = token;
+    result_token[0] = std::toupper(result_token[0]);
 
-    auto begin = output_word.begin();
-    *begin = std::toupper(*begin);
-
-    for (auto i = std::next(output_word.begin(), 1); i != output_word.end(); i++)
-    {
-        *i = std::tolower(*i);
+    for (size_t i = 1; i < result_token.length(); ++i) {
+        result_token[i] = std::tolower(result_token[i]);
     }
-    return output_word;
-    
+    return result_token;
 }
 
-void convert_input() {
-    std::string input_word;
+void convert() {
+    std::string input;
+    std::getline(std::cin, input);
 
-    bool isFirstly = true;
-    while (std::cin >> input_word) {
-        if (!isFirstly) {
-            std::cout << " "; 
+    bool is_prev_alpha = false; 
+
+    std::string sequence;
+
+    for (char c : input) {
+        if (std::isalpha(c)) {
+
+            sequence += c;
+            is_prev_alpha = true; 
+
+        } else {
+            if (is_prev_alpha) { 
+
+                std::cout << convert_token(sequence);
+                sequence.clear();
+                is_prev_alpha = false; 
+
+            }
+            std::cout << c;
         }
-        isFirstly = false;
-        std::cout << convert_word(input_word); 
+    }
+    if (is_prev_alpha) { 
+        std::cout << convert_token(sequence);
     }
 }
 
 int main() {
-    std::cout << "your string: ";
-    convert_input();
-    std::cout << "\n";
+    convert();
+ 
 }
