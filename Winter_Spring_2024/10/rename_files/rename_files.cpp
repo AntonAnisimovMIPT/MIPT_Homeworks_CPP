@@ -1,31 +1,24 @@
 #include <iostream>
 #include <filesystem>
+#include <algorithm>
 
-void renameFilesInDirectory(const std::string& directoryPath, const std::string& regist = "up") {
+void renameFilesInDirectory(const std::string_view directoryPath, const std::string_view regist = "up") {
 
     for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
         if (std::filesystem::is_regular_file(entry)) {
 
-            std::filesystem::path path = entry.path();
-            std::string name = path.filename().string();
+            auto path = entry.path();
+            auto name = path.filename().string();
 
             if (regist == "up") {
-                for (char& c : name) {
-                    if (std::islower(c)) {
-                        c = std::toupper(c);
-                    }
-                }
+                std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c) { return std::toupper(c); });
             }
             else if (regist == "low") {
-                for (char& c : name) {
-                    if (std::isupper(c)) {
-                        c = std::tolower(c);
-                    }
-                }
+                std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c) { return std::tolower(c); });
             }
             
 
-            std::filesystem::path replaced = path;
+            auto replaced = path;
             replaced.replace_filename(name);
             std::filesystem::rename(path, replaced);
 
@@ -37,6 +30,8 @@ int main() {
 
     std::string path;
     std::cin >> path;
-    renameFilesInDirectory(path, "low");
+    std::string reg;
+    std::cin >> reg;
+    renameFilesInDirectory(path, reg);
     
 }
