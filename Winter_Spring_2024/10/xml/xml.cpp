@@ -8,91 +8,106 @@
 #include <string>
 #include <vector>
 
-#include <nlohmann/json.hpp>
+#include <pugixml.hpp>
 
 // =================================================================================================
 
-void save(const std::filesystem::path & path, const nlohmann::json & object)
+void save(const std::filesystem::path& path, const pugi::xml_document& doc)
 {
-	if (std::fstream fout(path.string(), std::ios::out); fout)
-	{
-		fout << std::setw(4) << object;
-	}
-	else throw std::runtime_error("unable to open file " + path.string());
+    if (doc.save_file(path.string().c_str()))
+    {
+        std::cout << path.string() << std::endl;
+    }
+    else
+    {
+        throw std::runtime_error("Failed to save XML " + path.string());
+    }
 }
 
 // =================================================================================================
 
-[[nodiscard]] nlohmann::json load(const std::filesystem::path & path)
+[[nodiscard]] pugi::xml_document load(const std::filesystem::path& path)
 {
-	if (std::fstream fin(path.string(), std::ios::in); fin)
-	{
-		return nlohmann::json::parse(fin);
-	}
-	else throw std::runtime_error("unable to open file " + path.string());
+    pugi::xml_document doc;
+    if (doc.load_file(path.string().c_str()))
+    {
+        return doc;
+    }
+    else
+    {
+        throw std::runtime_error("Failed to load XML " + path.string());
+    }
 }
 
 // =================================================================================================
 
-struct Example 
-{ 
-    bool b{}; 
+struct Example
+{
+    bool b{};
+    std::vector<int> vector;
 
-    std::vector < int > vector;
-    
-    struct S { std::string string; double d{}; } s;
-
-}; // struct Example 
+    struct S
+    {
+        std::string string;
+        double d{};
+    } s;
+};
 
 // =================================================================================================
 
 struct Key
 {
-	static constexpr auto b      = "b";
+    static constexpr auto b = "b";
     static constexpr auto vector = "vector";
-    static constexpr auto s      = "s";
+    static constexpr auto s = "s";
     static constexpr auto string = "string";
-    static constexpr auto d      = "d";
-
-}; // struct Key
+    static constexpr auto d = "d";
+};
 
 // =================================================================================================
 
 int main()
 {
-    const Example example { true, { 1, 2, 3, 4, 5 }, { "hello", 3.14 } };
+    const Example example{true, {1, 2, 3, 4, 5}, {"hello", 3.14}};
 
-    constexpr auto file = "13.12.serialization.json.example.json";
+    constexpr auto file = "13.12.serialization.xml.example.xml";
 
     {
-        nlohmann::json object;
+        pugi::xml_document doc;
 
-        object[Key::b] = example.b;
+        auto root = doc.append_child("Example");
 
-        object[Key::vector] = example.vector;
+        root.append_attribute(Key::b).set_value(example.b ? "true" : "false");
 
-        object[Key::s][Key::string] = example.s.string;
+        auto vNode = root.append_child(Key::vector);
+        for (const auto& item : example.vector)
+        {
+            vNode.append_child("item").text().set(std::to_string(item).c_str());
+        }
 
-        object[Key::s][Key::d] = example.s.d;
+        auto sNode = root.append_child(Key::s);
+        sNode.append_child(Key::string).text().set(example.s.string.c_str());
+        sNode.append_child(Key::d).text().set(std::to_string(example.s.d).c_str());
 
-        save(file, object);
+        save(file, doc);
     }
 
     {
-        const auto object = load(file);
+        const auto doc = load(file);
 
-        assert(object[Key::b].get < bool > () == example.b);
+        auto root = doc.child("Example");
 
-        assert(object[Key::vector].get < std::vector < int > > () == example.vector);
-
-        assert(object[Key::s][Key::string].get < std::string > () == example.s.string);
-
-        assert(object[Key::s][Key::d].get < double > () == example.s.d);
+        
+        std::vector<int> loaded;
+        for (auto item : root.child(Key::vector).children("item"))
+        {
+            loaded.push_back(std::stoi(item.text().get()));
+        }   
     }
 
     std::cout << "Enter any character to continue: "; char c{}; std::cin >> c;
 
     std::filesystem::remove(file);
 
-	return 0;
+    return 0;
 }
