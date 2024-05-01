@@ -1,0 +1,6 @@
+number_throws: 10,    pi = 2.4
+number_throws: 100,    pi = 3.16
+number_throws: 1000,    pi = 3.24
+number_throws: 10000,    pi = 3.146
+number_throws: 100000,    pi = 3.13844
+number_throws: 1000000,    pi = 3.14166
