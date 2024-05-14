@@ -1,6 +1,6 @@
-number_elements: 10,    time_par = 0.000004,     time_seq = 0.000002
-number_elements: 100,    time_par = 0.000023,     time_seq = 0.000026
-number_elements: 1000,    time_par = 0.000130,     time_seq = 0.000127
-number_elements: 10000,    time_par = 0.001297,     time_seq = 0.001372
-number_elements: 1000000,    time_par = 0.150621,     time_seq = 0.204986
-number_elements: 10000000,    time_par = 1.430296,     time_seq = 1.408641
+number_elements: 10,    time_par = 0.000009,     time_seq = 0.000001
+number_elements: 100,    time_par = 0.000026,     time_seq = 0.000013
+number_elements: 1000,    time_par = 0.000259,     time_seq = 0.000127
+number_elements: 10000,    time_par = 0.002549,     time_seq = 0.001293
+number_elements: 1000000,    time_par = 0.299776,     time_seq = 0.256980
+number_elements: 10000000,    time_par = 3.142389,     time_seq = 1.486256

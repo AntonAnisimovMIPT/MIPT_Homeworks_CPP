@@ -1,12 +1,17 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <chrono>
+
+void sleepy() {
+    std::this_thread::sleep_for(std::chrono::microseconds(1)); 
+}
 
 int main() {
     std::vector<std::jthread> threads;
     try {
         while (true) {
-            threads.emplace_back([]() {});
+            threads.emplace_back(sleepy);
         }
     } catch (...) {
         std::cout << "Number of threads: " << threads.size() << std::endl;
@@ -14,7 +19,7 @@ int main() {
 
 }
 
-// в результате вывелось Number of threads: 13214
+// в результате вывелось Number of threads: 16214
 
 /*
 На оффициальном сайте Microsoft есть такая информация:

@@ -16,37 +16,19 @@ f might not be applied in order. The algorithm is executed according to policy
 #include <numeric>
 
 template<typename iter, typename f>
-auto advanced_for_each(iter first, iter last, f F) {
+void advanced_for_each(iter begin, iter end, f func) {
+    auto size = std::distance(begin, end);
+    auto min_size = 100; 
 
-    auto interval_size = std::distance(first, last);
-    if (interval_size == 0) return;
-
-    auto number_threads = std::thread::hardware_concurrency();
-    auto chunk_size = interval_size / number_threads;
-    auto last_chunk_size = interval_size % number_threads == 0 ? chunk_size : chunk_size + (interval_size % number_threads);
-
-    std::vector<std::future<void>> futures;
-    futures.reserve(number_threads);
-
-    for (int i = 0; i < number_threads; ++i) {
-        if (i != number_threads - 1) {
-            auto part_first = first + i * chunk_size;
-            auto part_last = part_first + chunk_size;
-            futures.emplace_back(std::async(std::launch::async, [=]() { std::for_each(part_first, part_last, F); }));
-        }
-        else {
-            auto part_first = first + i * last_chunk_size;
-            auto part_last = part_first + last_chunk_size;
-            futures.emplace_back(std::async(std::launch::async, [=]() { std::for_each(part_first, part_last, F); }));
-        }
-        
+    if (size <= min_size) {
+        std::for_each(begin, end, func);
+    } else {
+    
+        iter middle = std::next(begin, size / 2);
+        std::future<void> result = std::async(advanced_for_each<iter, f>, begin, middle, func);
+        advanced_for_each(middle, end, func);
+        result.wait(); 
     }
-
-    // без этого кода почему-то не работает, насколько я понял из-за неверной последовательности отработки потоков
-    for (auto& future : futures) {
-        future.wait();
-    }
-
 }
 
 int main() {

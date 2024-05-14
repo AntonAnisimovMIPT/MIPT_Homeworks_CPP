@@ -141,7 +141,7 @@ auto do_calculations(int size) {
     std::vector<double> par_oper_result(size);
 
     par_timer.start();
-    std::inclusive_scan(data.begin(), data.end(), par_oper_result.begin(), very_comlexity_operation);
+    std::inclusive_scan(std::execution::par, data.begin(), data.end(), par_oper_result.begin(), very_comlexity_operation);
     par_timer.pause();
 
     std::vector<double> seq_oper_result(size);
